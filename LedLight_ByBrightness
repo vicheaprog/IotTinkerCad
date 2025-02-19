@@ -1,0 +1,25 @@
+const int photoResistorPin = A0;
+const int ledPin = 13;
+const int threshold = 500;
+int brightness;
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(photoResistorPin, INPUT);
+  pinMode(ledPin, OUTPUT);
+}
+
+void loop() {
+  brightness = analogRead(photoResistorPin);
+
+  Serial.print("Brightness: ");
+  Serial.println(brightness);
+
+  if (brightness < threshold) {
+    digitalWrite(ledPin, HIGH);
+  } else {
+    digitalWrite(ledPin, LOW);
+  }
+
+  delay(1000);
+}
