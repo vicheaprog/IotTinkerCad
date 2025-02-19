@@ -1,0 +1,22 @@
+const int LDR_PIN = A0;  
+const int LED_PIN = 13;  
+
+void setup() {
+    Serial.begin(9600);  
+    pinMode(LED_PIN, OUTPUT);
+}
+
+void loop() {
+    int lightValue = analogRead(LDR_PIN); 
+    
+    int brightnessLevel = map(lightValue, 0, 1023, 10, 0);  
+    Serial.print("Brightness Level: ");
+    Serial.println(brightnessLevel);
+
+    int blinkDelay = map(brightnessLevel, 0, 10, 1000, 100); 
+    
+    digitalWrite(LED_PIN, HIGH);
+    delay(blinkDelay);
+    digitalWrite(LED_PIN, LOW);
+    delay(blinkDelay);
+}
