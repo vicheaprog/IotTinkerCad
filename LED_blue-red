@@ -1,0 +1,24 @@
+#define LEDred 13
+#define LEDblue 12
+#define TILT 9
+
+void setup() {
+  // put your setup code here, to run once:
+  pinMode(LEDred, OUTPUT);
+  pinMode(LEDblue, OUTPUT);
+  pinMode(TILT, INPUT_PULLUP);
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  if(digitalRead(TILT)==LOW) {
+    digitalWrite(LEDred, HIGH);
+    digitalWrite(LEDblue, HIGH);
+  }
+  else {
+    digitalWrite(LEDred, LOW);
+    digitalWrite(LEDblue, LOW);
+  }
+
+  delay(500);
+}
