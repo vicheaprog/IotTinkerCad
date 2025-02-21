@@ -1,0 +1,55 @@
+int redPin = 13, greenPin = 12, bluePin = 11;
+String receivedColor = "";
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(redPin, OUTPUT);
+  pinMode(greenPin, OUTPUT);
+  pinMode(bluePin, OUTPUT);
+
+  Serial.println("Enter a color (red, green, blue, yellow, cyan, orange, purple, white, pink):");
+}
+
+void loop() {
+  if (Serial.available()) {
+    receivedColor = Serial.readStringUntil('\n');
+    receivedColor.trim();
+    receivedColor.toLowerCase(); // Convert to lowercase for case-insensitivity
+
+    Serial.print("Color received: ");
+    Serial.println(receivedColor);
+
+    setColor(receivedColor);
+  }
+}
+
+void setColor(String color) {
+  int r = 0, g = 0, b = 0;
+
+  if (color == "red") {
+    r = 255; // Red
+  } else if (color == "green") {
+    g = 255; // Green
+  } else if (color == "blue") {
+    b = 255; // Blue
+  } else if (color == "yellow") {
+    r = 255; g = 255; // Yellow
+  } else if (color == "cyan") {
+    g = 255; b = 255; // Cyan
+  } else if (color == "orange") {
+    r = 255; g = 165; // Orange
+  } else if (color == "purple") {
+    r = 128; b = 128; // Purple
+  } else if (color == "pink") {
+    r = 255; g = 192; b = 203; // Pink
+  } else if (color == "white") {
+    r = 255; g = 255; b = 255; // White
+  } else {
+    Serial.println("Unknown color. Showing white by default.");
+    r = 255; g = 255; b = 255; // Default to white
+  }
+
+  analogWrite(redPin, r);
+  analogWrite(greenPin, g);
+  analogWrite(bluePin, b);
+}
