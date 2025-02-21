@@ -1,0 +1,45 @@
+int sensorPin = A0;
+int redPin = 11, greenPin = 12, bluePin = 13;
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(redPin, OUTPUT);
+  pinMode(greenPin, OUTPUT);
+  pinMode(bluePin, OUTPUT);
+}
+
+void loop() {
+  int sensorValue = analogRead(sensorPin);
+  float temperature = (sensorValue * 5.0 / 1023.0) * 100; 
+  
+  if (temperature < 0) temperature = 0;
+  if (temperature > 70) temperature = 70;
+  
+  Serial.print("Temperature: ");
+  Serial.print(temperature);
+  Serial.println(" °C");
+
+  if (temperature <= 10) {      
+    setColor(0, 0, 255);
+  } else if (temperature <= 20) {  
+    setColor(0, 255, 255);
+  } else if (temperature <= 30) { 
+    setColor(0, 255, 0);
+  } else if (temperature <= 40) {  
+    setColor(255, 255, 0);
+  } else if (temperature <= 50) {  
+    setColor(255, 165, 0);
+  } else if (temperature <= 60) {  
+    setColor(255, 0, 0);
+  } else {                         
+    setColor(255, 255, 255);
+  }
+  
+  delay(1000);
+}
+
+void setColor(int red, int green, int blue) {
+  analogWrite(redPin, red);
+  analogWrite(greenPin, green);
+  analogWrite(bluePin, blue);
+}
