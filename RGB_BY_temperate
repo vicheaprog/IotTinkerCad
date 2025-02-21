@@ -1,5 +1,5 @@
-int sensorPin = A0;
-int redPin = 11, greenPin = 12, bluePin = 13;
+int sensorPin = A0;  
+int redPin = 13, greenPin = 12, bluePin = 11;
 
 void setup() {
   Serial.begin(9600);
@@ -10,36 +10,48 @@ void setup() {
 
 void loop() {
   int sensorValue = analogRead(sensorPin);
-  float temperature = (sensorValue * 5.0 / 1023.0) * 100; 
+  float temperature = (sensorValue * 5.0 / 1023.0) * 100;
   
-  if (temperature < 0) temperature = 0;
-  if (temperature > 70) temperature = 70;
-  
+  temperature = constrain(temperature, 0, 70);
+
   Serial.print("Temperature: ");
   Serial.print(temperature);
   Serial.println(" °C");
 
-  if (temperature <= 10) {      
-    setColor(0, 0, 255);
-  } else if (temperature <= 20) {  
-    setColor(0, 255, 255);
-  } else if (temperature <= 30) { 
-    setColor(0, 255, 0);
-  } else if (temperature <= 40) {  
-    setColor(255, 255, 0);
-  } else if (temperature <= 50) {  
-    setColor(255, 165, 0);
-  } else if (temperature <= 60) {  
-    setColor(255, 0, 0);
-  } else {                         
-    setColor(255, 255, 255);
-  }
-  
+  int r, g, b;
+  getTemperatureColor(temperature, r, g, b);
+
+  analogWrite(redPin, r);
+  analogWrite(greenPin, g);
+  analogWrite(bluePin, b);
+
   delay(1000);
 }
 
-void setColor(int red, int green, int blue) {
-  analogWrite(redPin, red);
-  analogWrite(greenPin, green);
-  analogWrite(bluePin, blue);
+void getTemperatureColor(float temp, int &r, int &g, int &b) {
+  if (temp <= 10) { // Blue → Cyan
+    r = 0;
+    g = map(temp, 0, 10, 0, 255);
+    b = 255;
+  } else if (temp <= 20) { 
+    r = 0;
+    g = 255;
+    b = map(temp, 10, 20, 255, 0);
+  } else if (temp <= 30) { 
+    r = map(temp, 20, 30, 0, 255);
+    g = 255;
+    b = 0;
+  } else if (temp <= 40) {
+    r = 255;
+    g = map(temp, 30, 40, 255, 100); 
+    b = 0;
+  } else if (temp <= 50) { 
+    r = 255;
+    g = map(temp, 40, 50, 100, 0); 
+    b = 0;
+  } else if (temp <= 70) {
+    r = 255;
+    g = map(temp, 50, 70, 0, 255);
+    b = map(temp, 50, 70, 0, 255);
+  }
 }
